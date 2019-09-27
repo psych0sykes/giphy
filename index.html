@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <h1>gimme the gif</h1>
+        <input type="text" id="input">
+        <input type="submit" id="submit">
+    </form>
+    <div id="buttons" style="display: flex;">
+    </div>
+    
+    <div id="gifs" style="display: flex; flex-wrap: nowrap;">
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+<script type="text/javascript">
+
+    var topics = [
+        "kanye west",
+        "tyler the creator",
+        "brockhampton",
+        "childish gambino",
+        "jurassic 5",
+        "domo genesis",
+        "anderson paak",
+        "dr pepper"
+    ];
+    var key = "&vYFy1iGDSx5SQjyrlaPoLhs3zKlT7lEe";
+    var search;
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + search + key
+
+
+    function makeButtons() {
+        $("#buttons").empty();
+    for (i = 0; i < topics.length; i++){
+        var button = $("<button>");
+        $(button).attr("topic",topics[i]);
+        $(button).addClass("button")
+        $(button).text(topics[i])
+        $("#buttons").append(button);
+    };
+    };
+
+    function gif(){
+        console.log("gif")
+        console.log($(this).attr("topic"))
+
+    }
+
+    function submit(event) {
+        event.preventDefault()
+        var input = $("#input").val();
+        topics.push(input);
+        makeButtons();
+        $(".button").click(gif);
+    };
+
+    $("#submit").click(submit);
+
+    
+
+</script>
+</html>
