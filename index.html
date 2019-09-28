@@ -15,7 +15,7 @@
     <div id="buttons" style="display: flex;">
     </div>
     
-    <div id="gifs" style="display: flex; flex-wrap: nowrap;">
+    <div id="gifs" style="display: flex; flex-wrap: wrap;">
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
@@ -33,7 +33,7 @@
     ];
     var key = "&api_key=vYFy1iGDSx5SQjyrlaPoLhs3zKlT7lEe";
     var search;
-    var queryURL; 
+    var queryURL;
     var rating;
 
     function makeButtons() {
@@ -52,7 +52,7 @@
         search = $(this).attr("topic");
         console.log("search: " + search)
         
-        queryURL = "https://api.giphy.com/v1/gifs/search?q=" + search + key + "&limit=10"
+        queryURL = "https://api.giphy.com/v1/gifs/search?q=" + search + key + "&limit=10&fixed_height_still";
 
         $.ajax({
         url: queryURL,
@@ -68,16 +68,38 @@
                 rating = results[i].rating;
                 var newDiv = $("<div>").text("Rating: " + rating);
                 var newImg = $("<img>");
-                newImg.attr("src", results[i].images.fixed_height.url);
+                newImg.addClass("gif")
+                newImg.attr("status","STILL")
+                newImg.attr("src", results[i].images.fixed_height_still.url);
+                newImg.attr("still",results[i].images.fixed_height_still.url);
+                newImg.attr("active",results[i].images.fixed_height.url);
                 newDiv.append(newImg);
                 $("#gifs").append(newDiv);
             }
-
+            $(".gif").click(activeStill);
         })
-
-
     }
 
+    function activeStill() {
+
+            console.log(this)
+            
+            var still = $(this).attr("still")
+            console.log(still)
+            var active = $(this).attr("active")
+            console.log(active)
+
+            if ($(this).attr("status") === "STILL") {
+                console.log("ACTIVE");
+                $(this).attr("src",active);
+                $(this).attr("status","ACTIVE");
+            }
+            else {
+                console.log("STILL");
+                $(this).attr("src",still);
+                $(this).attr("isActive","STILL");
+            }
+        }
 
 
     function submit(event) {
